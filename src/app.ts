@@ -1,23 +1,22 @@
-import mongoose from "mongoose";
-import dotenv from "dotenv";
+import { Pokemon } from "./models/pokemonModel";
+import pokemonRoutes from "./routes/pokemonRoute";
+import { connectToDB } from "./server";
+import express from 'express'
+import dotenv from 'dotenv'
 
-dotenv.config();
+dotenv.config()
 
-function generateDatabaseURI(): string {
-  const password = process.env.PASSWORD as string;
-  const user = process.env.USER as string;
-  const uri = process.env.URI as string
-  return uri.replace("<%%PASSWORD%%>", password).replace("<%%USER%%>", user);
-}
+const app = express()
+const port = process.env.PORT
+app.use(express.json())
+app.use('/', pokemonRoutes)
 
-async function connectToDatabase() {
-  const databaseURI = generateDatabaseURI();
-  try {
-    const connection = await mongoose.connect(databaseURI);
-    console.log("Connected to the database:", connection);
-  } catch (error) {
-    console.error("Error connecting to the database:", error);
-  }
-}
+app.listen(port, () => {
+    console.log(`Server is running on port: ${port}`)
+    connectToDB()
+})
 
-connectToDatabase();
+
+
+
+
