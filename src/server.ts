@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export async function connectToDB() {
+  console.log('server module loaded')
   const password = process.env.PASSWORD as string;
   const user = process.env.USER as string;
   const uri = process.env.URI as string

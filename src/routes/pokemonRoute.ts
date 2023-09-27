@@ -1,7 +1,11 @@
 import express from "express"
-import { getListOfPokemons, addPokemonToDB, getPokemonByID, updatePokemonByID, deletePokemonByID, getListOfTop3Pokemons } from "../controller/pokemonController"
+import { getListOfPokemons, addPokemonToDB, getPokemonByID, updatePokemonByID, deletePokemonByID, getListOfTop3Pokemons, getAvreagePowerOfAType, getPokemonTypes } from "../controller/pokemonController"
+import { routeAuth } from "../controller/authController"
 
 const router = express.Router()
+router.route("/pokemon/get-strongest").get(routeAuth, getAvreagePowerOfAType)
+router.route("/pokemon/getType").get(getPokemonTypes)
+
 router.route("/pokemon/top-3").get(getListOfTop3Pokemons, getListOfPokemons)
 router.route("/pokemon/").get(getListOfPokemons).post(addPokemonToDB)
 
