@@ -1,4 +1,4 @@
-import mongoose, { Model, Query } from "mongoose";
+import mongoose, { Model, Query, Schema } from "mongoose";
 import { IPokemon } from "../types";
 
 const pokemonSchema = new mongoose.Schema<IPokemon>({
@@ -6,7 +6,7 @@ const pokemonSchema = new mongoose.Schema<IPokemon>({
         type: String,
         required: [true, "A pokemon needs a ID."],
         maxlength: [3, "ID to high"],
-        minlength:[3, "ID must contain 3 letters."],
+        minlength: [3, "ID must contain 3 letters."],
         unique: true
     },
     name: {
@@ -41,12 +41,33 @@ const pokemonSchema = new mongoose.Schema<IPokemon>({
     createdAt: {
         type: Date,
         default: Date.now
-    }
+    },
+    location: [{
+        zones: {
+            type: [String],
+            default: ["green"],
+        },
+        odds: {
+            type: Number,
+            default: 23,
+        }
+    }],
+    // location: new mongoose.Schema({
+    // zones: {
+    //     type: [String],
+    //     default: ["green"],
+    // },
+    // odds: {
+    //     type: Number,
+    //     default: 23,
+    // },
+    // })
 })
 
 //DOC MIDDLEWARE "Pre"
-pokemonSchema.pre("save", function (next) {
-    this.img = this.img + ".xh"
+pokemonSchema.pre("save", function (next) { 
+    //Mongoose bugfix, read more https://mongoosejs.com/docs/subdocs.html#subdocuments-versus-nested-paths
+    this.location = {}
     next()
 })
 
@@ -71,7 +92,7 @@ pokemonSchema.pre("aggregate", function (next) {
 
     const stage = { $match: { rare: { $ne: true } } };
     this.pipeline().unshift(stage);
- 
+
     next();
 });
 

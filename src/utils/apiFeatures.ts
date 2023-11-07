@@ -4,35 +4,43 @@ enum SortDirection {
 }
 
 export class APIFeatures {
-    constructor(public queryObj: any, public queryString: any) {
+    constructor(public queryDocument: any, public queryString: any) {
 
     }
     filter() {
         let query = { ...this.queryString }
-        console.log(typeof(this.queryString))
         const excludeFieldsFromQuery = ["sort", "page", "limit", "fields"]
         excludeFieldsFromQuery.forEach(field => delete query[field])
+
         let stringifiedQuery = JSON.stringify(query)
-        stringifiedQuery = stringifiedQuery.replace(/\b(gte|gt|lte|lt|in)\b/g, match => `$${match}`)
+
+        stringifiedQuery = stringifiedQuery.replace(/\b(all|gte|gt|lte|lt|in)\b/g, match => `$${match}`)
+
         query = JSON.parse(stringifiedQuery)
-        this.queryObj.find(query)
+        console.log("🐮🐮:", query)
+        this.queryDocument.find(query)
+
         return this
     }
 
     sort() {
+
         if (this.queryString.sort) {
             const query = this.queryString.sort.split(',')
+
             const sortQueries: Record<string, number> = {}
             query.forEach((key: string) => sortQueries[key] = SortDirection.highToLow)
-            this.queryObj.sort(sortQueries)
+            this.queryDocument.sort(sortQueries)
         }
 
         return this
     }
-    limitFields() {
+    fields() {
+        console.log("🦖:", this.queryString.fields)
         if (this.queryString.fields) {
-            const selectQeries = this.queryString.fields.replace(",", " ")
-            this.queryObj.select(selectQeries)
+            const fields = this.queryString.fields.split(",").join(" ");
+            this.queryDocument.select(fields)
+            
         }
 
         return this
@@ -42,9 +50,10 @@ export class APIFeatures {
             const page = this.queryString.page ? 1 * this.queryString.page : 1
             const limit = this.queryString.limit ? 1 * this.queryString.limit : 3
             const skip = (page - 1) * limit as number
-            this.queryObj.skip(skip).limit(limit)
+            this.queryDocument.skip(skip).limit(limit)
 
         }
+
         return this
     }
 }

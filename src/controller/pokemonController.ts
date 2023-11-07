@@ -4,16 +4,16 @@ import { generateResponse, httpStatus } from "../utils/generateResponse";
 import { APIFeatures } from "../utils/apiFeatures";
 import { catchAsyncError } from "../utils/catchAsyncError";
 import { AppError } from "../utils/appError";
-import dotenv from "dotenv"
-dotenv.config()
+
 
 export const getListOfPokemons = catchAsyncError(async (req: any, res: any, next: NextFunction) => {
+
     const features = new APIFeatures(Pokemon.find(), req.query)
         .filter()
         .sort()
-        .limitFields()
+        .fields()
         .paginate();
-    const list = await Pokemon.find(features.queryObj);
+    const list = await Pokemon.find(features.queryDocument);
     generateResponse(res, httpStatus.OK, 'successMsg', list)
 });
 
@@ -57,7 +57,7 @@ export const getPokemonTypes = catchAsyncError(async (req: any, res: any, next: 
         },
     ]);
     if (!pokemonByType) {
-        // return generateError()
+        return next(new AppError("No pokemons by that type was found", 404))
     }
     return generateResponse(res, 200, "Pokemons was found!", pokemonByType);
 });
@@ -77,13 +77,12 @@ export const getPokemonByID = async (req: Request, res: Response, next: NextFunc
         return next(new AppError(`No pokemon exist by id: ${ID}.`, httpStatus.BAD_REQUEST))
     }
     return generateResponse(res, 200, `Found a pokemon named: ${fetchedPokemon.name}, in the DB.`, fetchedPokemon);
-}; 
+};
 
 export const addPokemonToDB = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
 
     const createdPokemon = await Pokemon.create(req.body);
     if (!createdPokemon) {
-        console.log(createdPokemon)
         // return next 
     }
     return generateResponse(res, 201, `${createdPokemon.name} has been successfully created to the DB!`, createdPokemon);
