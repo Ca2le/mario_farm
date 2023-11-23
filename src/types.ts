@@ -1,7 +1,7 @@
-import { Model } from "mongoose";
-import { Request } from "express";
+import { Model, Types } from 'mongoose';
+import e, { Request } from 'express';
 
-export type PokemonType = "normal" | "fire" | "water" | "grass" | "electric" | "ice" | "fighting" | "poison" | "ground" | "flying" | "psychic" | "bug" | "rock" | "ghost" | "dragon" | "dark" | "fairy" | "steel";
+export type PokemonType = 'normal' | 'fire' | 'water' | 'grass' | 'electric' | 'ice' | 'fighting' | 'poison' | 'ground' | 'flying' | 'psychic' | 'bug' | 'rock' | 'ghost' | 'dragon' | 'dark' | 'fairy' | 'steel';
 
 export interface IPokemon {
     id: string,
@@ -14,7 +14,7 @@ export interface IPokemon {
     img: string,
     rare: boolean,
     createdAt: Date,
-    location:any
+    location: any
 }
 
 export interface IUserAuth {
@@ -24,19 +24,21 @@ export interface IUserAuth {
     role: Role,
     passwordUpdated: number,
     confirmPassword: string,
-    newPW_Token: string,
-    newPW_TokenExp: number,
-    newPW_Pending: boolean
+    pwToken: string,
+    pwTokenExp: number,
+    pin: string,
+    pinExp: number
 }
 
 export interface IUserMethods {
     isPasswordOlderThenToken(token: JWTInterface): boolean,
-    createCryptoToken(): string
+    createSha256Token(type: 'password' | 'pin'): string
+    resetPin(): void
 }
 
 export type UserModel = Model<IUserAuth, {}, IUserMethods>
 
-export type Role = "ADMIN" | "PROUSER" | "USER"
+export type Role = 'ADMIN' | 'PROUSER' | 'USER'
 
 export enum httpStatus {
     OK = 200,
@@ -62,10 +64,24 @@ export interface CustomRequest extends Request {
 }
 
 export interface IMail {
-    from: "noreplay@jumpcode.org",
+    from: 'noreplay@receptify.se',
     to: string,
     subject: string,
-    text: string,
     html: string,
     attachments: any[]
+}
+
+export interface IForgotPasswordContent {
+    template: string
+    name: string,
+    email: string,
+    payload: string
+}
+
+export interface EmailContent {
+    template: string,
+    name: string,
+    email: string,
+    [key: string]: any;
+
 }

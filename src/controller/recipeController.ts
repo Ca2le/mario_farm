@@ -12,7 +12,24 @@ export const getAllRecipes = catchAsyncError(async (request: Request, response: 
         .fields()
         .paginate()
 
-    const data = await Recipe.find(features.queryDocument)
+    const data = await Recipe
+        .find(features.queryDocument)
+        .populate(
+            {
+                path: 'product_ids',
+                select: 'name sub_category category image',
+                populate: [
+                    {
+                        path: 'sub_category',
+                        select: 'name -_id'
+                    },
+                    {
+                        path: 'category',
+                        select: 'name -_id'
+                    }
+                ]
+            }
+        )
 
     generateResponse(response, httpStatus.OK, "Succesfully fetched recipe data!", data)
 })
@@ -21,7 +38,7 @@ export const createRecipe = catchAsyncError(async (request: Request, response: R
     const {
         name,
         description,
-        ingridient,
+        product_ids,
         instructions,
         category,
         author,
@@ -34,7 +51,7 @@ export const createRecipe = catchAsyncError(async (request: Request, response: R
     const recipe = await Recipe.create({
         name,
         description,
-        ingridient,
+        product_ids,
         instructions,
         category,
         author,
@@ -48,14 +65,24 @@ export const createRecipe = catchAsyncError(async (request: Request, response: R
 })
 
 export const getRecipeByID = catchAsyncError(async (request: Request, response: Response, next: NextFunction) => {
-    const { id } = request.params
-    const recipe = await Recipe.findById(id)
+    const { recipe_id } = request.params
+    const recipe = await Recipe
+        .findById(recipe_id)
+        .populate({
+            path: 'product_ids', populate: [
+                { path: 'origin', model: 'Country' },
+                { path: 'produced', model: 'Country' },
+                { path: 'category', model: 'Category' },
+                { path: 'supplier', model: 'Supplier' },
+                { path: 'nutrition.nutr_id', model: 'Nutrition' }
+            ]
+        })
     generateResponse(response, httpStatus.OK, "Recipe has been found🔭.", recipe)
 })
 
 export const deleteRecipeByID = catchAsyncError(async (request: Request, response: Response, next: NextFunction) => {
-    const { id } = request.params
-    await Recipe.findByIdAndDelete(id)
+    const { recipe_id } = request.params
+    await Recipe.findByIdAndDelete(recipe_id)
     generateResponse(response, httpStatus.OK, "Recipe has been deleted🧹.")
 })
 

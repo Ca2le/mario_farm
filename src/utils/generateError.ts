@@ -47,7 +47,7 @@ function mongoErrorHandler(error: MixedErrorType) {
     else return new AppError(`Please configure mongoErrorHandler to use error: ${error.name}.`, 566)
 }
 
-function errorGenerator(error: any, req: Request, res: Response, next: NextFunction) {
+function errorGenerator(error: any, res: Response, next: NextFunction) {
     switch (process.env.NODE_ENV) {
         case "PRODUCTION": {
             if (error instanceof AppError) {

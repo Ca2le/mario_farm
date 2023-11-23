@@ -1,19 +1,18 @@
 import { NextFunction, Request, Response } from "express";
 import { catchAsyncError } from "../utils/catchAsyncError";
 import { APIFeatures } from "../utils/apiFeatures";
-import { ICustomIngredient, Ingredient } from "../models/ingredientModel";
 import { generateResponse, httpStatus } from "../utils/generateResponse";
-import { ISubCat } from "../models/subCatModel";
+import { ISubCat, SubCat } from "../models/subCatModel";
 
 export const getAllSubCategories = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
-    const features = new APIFeatures(Ingredient.find(), req.query)
+    const features = new APIFeatures(SubCat.find(), req.query)
     features
         .filter()
         .sort()
         .paginate()
         .fields()
 
-        const queryDocument = await Ingredient.find(features)
+        const queryDocument = await SubCat.find(features)
 
         generateResponse(res, httpStatus.OK, "Succesfully fetched all subcategories!", queryDocument)
 })
@@ -21,13 +20,15 @@ export const getAllSubCategories = catchAsyncError(async (req: Request, res: Res
 export const createSubCategory = catchAsyncError(async (request: Request, response: Response, next: NextFunction) => {
     const {
         name,
-        image,
+        image_name,
+        image_path,
         description
     }: ISubCat = request.body
 
-    const subCategory = await Ingredient.create({
+    const subCategory = await SubCat.create({
         name,
-        image,
+        image_name,
+        image_path,
         description
     })
 

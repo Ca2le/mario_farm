@@ -13,11 +13,8 @@ export class APIFeatures {
         excludeFieldsFromQuery.forEach(field => delete query[field])
 
         let stringifiedQuery = JSON.stringify(query)
-
         stringifiedQuery = stringifiedQuery.replace(/\b(all|gte|gt|lte|lt|in)\b/g, match => `$${match}`)
-
         query = JSON.parse(stringifiedQuery)
-        console.log("🐮🐮:", query)
         this.queryDocument.find(query)
 
         return this
@@ -36,9 +33,10 @@ export class APIFeatures {
         return this
     }
     fields() {
-        console.log("🦖:", this.queryString.fields)
+       
         if (this.queryString.fields) {
             const fields = this.queryString.fields.split(",").join(" ");
+           
             this.queryDocument.select(fields)
             
         }

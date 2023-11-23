@@ -3,25 +3,24 @@ import mongoose, { Types } from "mongoose";
 
 export interface ISubCat {
     name: string,
-    image: string,
+    image_name: string,
+    image_path: string,
     description: string,
 }
-const recipeSchema = new mongoose.Schema<ISubCat>({
+const subCatSchema = new mongoose.Schema<ISubCat>({
     name: {
         type: String,
         required: true,
     },
-    image: {
-        type: String,
-        required: true,
-    },
+    image_name: String,
+    image_path: String,
     description: {
         type: String,
         required: true,
     },
 });
 
-export const Recipe = mongoose.model('Recipe', recipeSchema)
+export const SubCat = mongoose.model('SubCat', subCatSchema)
 
 
 

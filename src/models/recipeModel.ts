@@ -1,15 +1,10 @@
 // import { ObjectId } from "mongodb";
 import mongoose, { Types } from "mongoose";
 
-export interface I_Ingridient {
-    name: string,
-    product_ids: Types.ObjectId[]
-}
-
 export interface IRecipe {
     name: string,
     description: string,
-    ingridient: I_Ingridient,
+    product_ids: string[],
     instructions: string,
     prep_time: number,
     cook_time: number,
@@ -24,9 +19,9 @@ const recipeSchema = new mongoose.Schema<IRecipe>({
         required: true,
     },
     description: String,
-    ingridient: [{
-        name: String,
-        product_ids: [Types.ObjectId]
+    product_ids: [{
+        ref: 'Product',
+        type: Types.ObjectId
     }],
     instructions: String,
     prep_time: String,
@@ -36,6 +31,10 @@ const recipeSchema = new mongoose.Schema<IRecipe>({
     created: String,
     category: String
 });
+
+// recipeSchema.pre('find', function () {
+//     // this.populate('product_ids', '-__v')
+// })
 
 export const Recipe = mongoose.model('Recipe', recipeSchema)
 

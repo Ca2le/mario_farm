@@ -12,22 +12,24 @@ export const getAllProducers = catchAsyncError(async (req: Request, res: Respons
         .paginate()
         .fields()
 
-        const queryDocument = await Producer.find(features)
+    const queryDocument = await Producer.find(features)
 
-        generateResponse(res, httpStatus.OK, "Succesfully fetched all custom producers!", queryDocument)
+    generateResponse(res, httpStatus.OK, "Succesfully fetched all custom producers!", queryDocument)
 })
 
 export const createProducer = catchAsyncError(async (request: Request, response: Response, next: NextFunction) => {
     const {
         name,
-        image,
+        image_name,
+        image_path,
         description,
         location
     }: IProducer = request.body
 
     const producer = await Producer.create({
         name,
-        image,
+        image_name,
+        image_path,
         description,
         location
     })

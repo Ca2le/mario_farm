@@ -1,7 +1,8 @@
 import mongoose, { Types } from "mongoose";
 export interface IProducer {
     name: string,
-    image: string,
+    image_name: string,
+    image_path: string,
     description: string,
     location: Types.ObjectId[],
 }    
@@ -11,7 +12,8 @@ const producerSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    image: String,
+    image_name: String,
+    image_path: String,
     description: String,
     location: [{
         ref:"Country",

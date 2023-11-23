@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f8f8f8;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+    }
+
+    h1 {
+      color: #4285f4;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    .digit-container {
+      display: flex;
+    }
+
+    .digit {
+      background-color: #4285f4;
+      color: #fff;
+      padding: 10px;
+      margin: 0 5px;
+      text-align: center;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    .login-link {
+      display: inline-block;
+      background-color: #4285f4;
+      color: #fff;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    .login-link:hover {
+      background-color: #3c78d8;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Hello %%name%%</h1>
+    <p>
+      Your email contains an 8-digit verification code. Please copy the code and paste it during the login process.
+    </p>
+    <div class="digit-container">
+      <div>%%key0%%</div>
+      <div>%%key1%%</div>
+      <div>%%key2%%</div>
+      <div>%%key3%%</div>
+      <div>%%key4%%</div>
+      <div>%%key5%%</div>
+      <div>%%key6%%</div>
+      <div>%%key7%%</div>
+    </div>
+  </div>
+</body>
+</html>

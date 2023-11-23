@@ -19,11 +19,13 @@ export const getAllNutritions = catchAsyncError(async (req: Request, res: Respon
 
 export const createNutrition = catchAsyncError(async (request: Request, response: Response, next: NextFunction) => {
     const {
-        name
+        name,
+        measurement
     }: INutrition = request.body
 
     const supplier = await Nutrition.create({
-        name
+        name,
+        measurement
     })
 
     generateResponse(response, httpStatus.CREATED, `A new nutrition has been created! ${name}🛒`, supplier)

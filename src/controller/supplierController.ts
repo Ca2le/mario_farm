@@ -21,14 +21,16 @@ export const createSupplier = catchAsyncError(async (request: Request, response:
     const {
         name,
         url,
-        image,
+        image_name,
+        image_path,
         description
     }: ISupplier = request.body
 
     const supplier = await Supplier.create({
         name,
         url,
-        image,
+        image_name,
+        image_path,
         description
     })
 

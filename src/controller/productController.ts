@@ -2,18 +2,17 @@ import { NextFunction, Request, Response } from "express";
 import { catchAsyncError } from "../utils/catchAsyncError";
 import { APIFeatures } from "../utils/apiFeatures";
 import { generateResponse, httpStatus } from "../utils/generateResponse";
-import { IProduct } from "../models/productModel";
-import { Ingredient } from "../models/ingredientModel";
+import { IProduct, Product } from "../models/productModel";
 
 export const getAllProducts = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
-    const features = new APIFeatures(Ingredient.find(), req.query)
+    const features = new APIFeatures(Product.find(), req.query)
     features
         .filter()
         .sort()
         .paginate()
         .fields()
 
-    const queryDocument = await Ingredient.find(features)
+    const queryDocument = await Product.find(features)
 
     generateResponse(res, httpStatus.OK, "Succesfully fetched all custom ingridients!")
 })
@@ -21,8 +20,9 @@ export const getAllProducts = catchAsyncError(async (req: Request, res: Response
 export const createProduct = catchAsyncError(async (request: Request, response: Response, next: NextFunction) => {
     const {
         name,
-        prod_ingredients,
-        image,
+        ingredients,
+        image_name,
+        image_path,
         milliliter,
         gram,
         produced,
@@ -30,12 +30,13 @@ export const createProduct = catchAsyncError(async (request: Request, response: 
         nutrition,
         category,
         supplier,
+        sub_category
     }: IProduct = request.body
-
-    const product = await Ingredient.create({
+    const product = await Product.create({
         name,
-        prod_ingredients,
-        image,
+        ingredients,
+        image_name,
+        image_path,
         milliliter,
         gram,
         produced,
@@ -43,6 +44,7 @@ export const createProduct = catchAsyncError(async (request: Request, response: 
         nutrition,
         category,
         supplier,
+        sub_category
     })
 
     generateResponse(response, httpStatus.CREATED, `${name} was added as a product. 🎉`, product)

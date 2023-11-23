@@ -14,19 +14,21 @@ export const getAllCategories = catchAsyncError(async (req: Request, res: Respon
 
         const queryDocument = await Category.find(features)
 
-        generateResponse(res, httpStatus.OK, "Succesfully fetched all custom ingridients!")
+        generateResponse(res, httpStatus.OK, "Succesfully fetched all custom ingridients!", queryDocument)
 })
 
 export const createCategory = catchAsyncError(async (request: Request, response: Response, next: NextFunction) => {
     const {
         name,
-        image,
+        image_name,
+        image_path,
         description
     }: ICategory = request.body
 
     const category = await Category.create({
         name,
-        image,
+        image_name,
+        image_path,
         description
     })
 

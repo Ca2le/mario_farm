@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
 export interface ICategory {
     name: string,
-    image: string,
-    description: String
+    image_name: string,
+    image_path: string,
+    description: string
 
 
 }
@@ -11,7 +12,8 @@ const categorySchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    image: String,
+    image_name: String,
+    image_path: String,
     description: String
 });
 
