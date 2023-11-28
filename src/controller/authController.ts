@@ -9,6 +9,7 @@ import { AppError } from '../utils/appError';
 import { Types } from 'mongoose';
 import { Email } from '../utils/email'
 import crypto from "crypto";
+import { strict } from 'assert';
 
 const createJWT = async (id: Types.ObjectId) => {
     const expiresIn = process.env.JWT_TIME_STAMP
@@ -177,12 +178,16 @@ export const emailPinVerification = catchAsyncError(async (req: Request, res: Re
         if (user.pinExp > currentTime) {
             const validUser = await bcrypt.compare(pin, user.pin)
             if (validUser) {
-                // const token = await createJWT(user._id);
-                // res.cookie("token_001", token, {
-                //     expires: new Date(Date.now() + Number(process.env.COOKIE_EXPIRES)),
-                //     httpOnly: true
-                // })
+                const token = await createJWT(user._id);
+                res.cookie("token_001", token, {
+                    maxAge: 9000000,
+                    sameSite: 'strict',
+                    path: '/',
+                    httpOnly: true,
+                    domain: '127.0.0.1'
+                })
                 // res.end()
+                
                 generateResponse(res, httpStatus.OK, `'Cookie? 🍪🧐' to -> ${user.name}! 😎`)
             } else {
 
