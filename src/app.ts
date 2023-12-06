@@ -36,7 +36,7 @@ app.use(ExpressMongoSanitize());
 app.use(hpp({ whitelist: ["type"] }));
 
 app.use("/forgot-password", limiter);
-app.use(cors({ origin: "http://127.0.0.1:3000", credentials: true }));
+app.use(cors({ origin: "http://127.0.0.1:3001", credentials: true }));
 
 app.use(express.json());
 app.use(cookieParser());

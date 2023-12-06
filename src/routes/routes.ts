@@ -1,51 +1,51 @@
 import { Router } from "express";
 import {
-  createCategory,
-  getAllCategories,
+    createCategory,
+    getAllCategories,
 } from "../controller/categoryController";
 import {
-  createSubCategory,
-  getAllSubCategories,
+    createSubCategory,
+    getAllSubCategories,
 } from "../controller/subCatController";
 import {
-  createNutrition,
-  getAllNutritions,
+    createNutrition,
+    getAllNutritions,
 } from "../controller/nutritionController";
 import {
-  createProducer,
-  getAllProducers,
+    createProducer,
+    getAllProducers,
 } from "../controller/producerController";
 import { createProduct, getAllProducts } from "../controller/productController";
 import {
-  createSupplier,
-  getAllSuppliers,
+    createSupplier,
+    getAllSuppliers,
 } from "../controller/supplierController";
 import {
-  createCountry,
-  getAllCountries,
+    createCountry,
+    getAllCountries,
 } from "../controller/countryController";
 import {
-  createRecipe,
-  deleteRecipeByID,
-  getAllRecipes,
-  getRecipeByID,
-  updateRecipeByID,
+    createRecipe,
+    deleteRecipeByID,
+    getAllRecipes,
+    getRecipeByID,
+    updateRecipeByID,
 } from "../controller/recipeController";
 import {
-  signUp,
-  login,
-  authCheck,
-  forgotPassword,
-  resetPassword,
-  updatePassword,
-  passwordVerification,
-  emailPinVerification,
-  tokenVerification,
+    signUp,
+    login,
+    authCheck,
+    forgotPassword,
+    resetPassword,
+    updatePassword,
+    passwordVerification,
+    emailPinVerification,
+    tokenVerification,
 } from "../controller/authController";
 import {
-  createFolder,
-  storeImage,
-  storeFileInMemory,
+    createFolder,
+    storeImage,
+    storeFileInMemory,
 } from "../controller/imageController";
 
 const router = Router();
@@ -53,47 +53,47 @@ const router = Router();
 // ImageRoutes
 // www.receptify.se/image/12sadio12i3jco12312
 router
-  .route("/image/:id")
-  .patch(authCheck, storeFileInMemory, createFolder, storeImage);
+    .route("/image/:id")
+    .patch(authCheck, storeFileInMemory, createFolder, storeImage);
 
 // RecipeRoutes
 router
-  .route("/recipe")
-  .get(authCheck, getAllRecipes)
-  .post(authCheck, createRecipe);
+    .route("/recipe")
+    .get(authCheck, getAllRecipes)
+    .post(authCheck, createRecipe);
 router
-  .route("/recipe/:recipe_id")
-  .get(authCheck, getRecipeByID)
-  .delete(authCheck, deleteRecipeByID)
-  .put(authCheck, updateRecipeByID);
+    .route("/recipe/:recipe_id")
+    .get(authCheck, getRecipeByID)
+    .delete(authCheck, deleteRecipeByID)
+    .put(authCheck, updateRecipeByID);
 router
-  .route("/category")
-  .get(authCheck, getAllCategories)
-  .post(authCheck, createCategory);
+    .route("/category")
+    .get(authCheck, getAllCategories)
+    .post(authCheck, createCategory);
 router
-  .route("/nutrition")
-  .get(authCheck, getAllNutritions)
-  .post(authCheck, createNutrition);
+    .route("/nutrition")
+    .get(authCheck, getAllNutritions)
+    .post(authCheck, createNutrition);
 router
-  .route("/producer")
-  .get(authCheck, getAllProducers)
-  .post(authCheck, createProducer);
+    .route("/producer")
+    .get(authCheck, getAllProducers)
+    .post(authCheck, createProducer);
 router
-  .route("/product")
-  .get(authCheck, getAllProducts)
-  .post(authCheck, createProduct);
+    .route("/product")
+    .get(authCheck, getAllProducts)
+    .post(authCheck, createProduct);
 router
-  .route("/sub_category")
-  .get(authCheck, getAllSubCategories)
-  .post(authCheck, createSubCategory);
+    .route("/sub_category")
+    .get(authCheck, getAllSubCategories)
+    .post(authCheck, createSubCategory);
 router
-  .route("/supplier")
-  .get(authCheck, getAllSuppliers)
-  .post(authCheck, createSupplier);
+    .route("/supplier")
+    .get(authCheck, getAllSuppliers)
+    .post(authCheck, createSupplier);
 router
-  .route("/country")
-  .get(authCheck, getAllCountries)
-  .post(authCheck, createCountry);
+    .route("/country")
+    .get(authCheck, getAllCountries)
+    .post(authCheck, createCountry);
 
 // AuthRoutes
 router.route("/signup").post(signUp);
