@@ -186,9 +186,8 @@ export const emailPinVerification = catchAsyncError(async (req: Request, res: Re
                     httpOnly: true,
                     domain: '127.0.0.1'
                 })
-                // res.end()
-                
-                generateResponse(res, httpStatus.OK, `'Cookie? 🍪🧐' to -> ${user.name}! 😎`)
+                const startingData = await User.findById(id)
+                generateResponse(res, httpStatus.OK, `'Cookie? 🍪🧐' to -> ${user.name}! 😎`, user.name)
             } else {
 
                 generateResponse(res, httpStatus.UNAUTHORIZED, `Bad pin!😒`)

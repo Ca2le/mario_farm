@@ -47,6 +47,7 @@ import {
     storeImage,
     storeFileInMemory,
 } from "../controller/imageController";
+import { getAllIndexes } from "../controller/indexController";
 
 const router = Router();
 
@@ -73,7 +74,7 @@ router
 router
     .route("/nutrition")
     .get(authCheck, getAllNutritions)
-    .post(authCheck, createNutrition);
+    .post(createNutrition);
 router
     .route("/producer")
     .get(authCheck, getAllProducers)
@@ -94,6 +95,10 @@ router
     .route("/country")
     .get(authCheck, getAllCountries)
     .post(authCheck, createCountry);
+
+router
+    .route("/index_values")
+    .get(getAllIndexes)
 
 // AuthRoutes
 router.route("/signup").post(signUp);

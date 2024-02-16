@@ -1,5 +1,6 @@
 import mongoose, { Types } from "mongoose";
 import { INutrition } from "./nutritionModel";
+import { DataIndex } from "./indexModel";
 
 export interface IProduct {
     name: string,
@@ -54,6 +55,22 @@ const productSchema = new mongoose.Schema({
     supplier: {
         type: [mongoose.Types.ObjectId],
         ref: "Supplier"
+    }
+});
+
+productSchema.post('save', async function () {
+    try {
+        await DataIndex.updateOne({}, { $inc: { products: 1 } }, { upsert: true });
+    } catch (err) {
+        console.log('Couldn\'t update index data in the database. 🧐', err);
+    }
+});
+
+productSchema.post('deleteOne', async function () {
+    try {
+        await DataIndex.updateOne({}, { $inc: { products: -1 } });
+    } catch (err) {
+        console.log('Couldn\'t update index data in the database. 🧐', err);
     }
 });
 

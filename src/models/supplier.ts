@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { DataIndex } from "./indexModel";
 export interface ISupplier {
     name: string,
     url: string,
@@ -22,5 +23,22 @@ const supplierSchema = new mongoose.Schema<ISupplier>({
         required: true,
     },
 });
+
+supplierSchema.post('save', async function () {
+    try {
+        await DataIndex.updateOne({}, { $inc: { suppliers: 1 } }, { upsert: true });
+    } catch (err) {
+        console.log('Couldn\'t update index data in the database. 🧐', err);
+    }
+});
+
+supplierSchema.post('deleteOne', async function () {
+    try {
+        await DataIndex.updateOne({}, { $inc: { suppliers: -1 } });
+    } catch (err) {
+        console.log('Couldn\'t update index data in the database. 🧐', err);
+    }
+});
+
 
 export const Supplier = mongoose.model('Supplier', supplierSchema)

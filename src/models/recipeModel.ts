@@ -1,5 +1,6 @@
 // import { ObjectId } from "mongodb";
 import mongoose, { Types } from "mongoose";
+import { DataIndex } from "./indexModel";
 
 export interface IRecipe {
     name: string,
@@ -35,6 +36,22 @@ const recipeSchema = new mongoose.Schema<IRecipe>({
 // recipeSchema.pre('find', function () {
 //     // this.populate('product_ids', '-__v')
 // })
+
+recipeSchema.post('save', async function () {
+    try {
+        await DataIndex.updateOne({}, { $inc: { recipes: 1 } }, { upsert: true });
+    } catch (err) {
+        console.log('Couldn\'t update index data in the database. 🧐', err);
+    }
+});
+
+recipeSchema.post('deleteOne', async function () {
+    try {
+        await DataIndex.updateOne({}, { $inc: { recipes: -1 } });
+    } catch (err) {
+        console.log('Couldn\'t update index data in the database. 🧐', err);
+    }
+});
 
 export const Recipe = mongoose.model('Recipe', recipeSchema)
 
